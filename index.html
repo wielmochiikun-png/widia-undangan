@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan Widi & Hassan</title>
+    <!-- Memuat Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Memuat Font Awesome untuk Ikon Musik -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Gaya kustom untuk latar belakang dan font */
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            overflow-x: hidden;
+        }
+        .playfair {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Mengatur agar halaman cover selalu memenuhi layar */
+        #cover-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1a202c; /* Biru gelap/Navy */
+            z-index: 100;
+            transition: opacity 0.8s ease-in-out;
+            background-image: url('/html/image.jpeg.jpeg');
+            background-size: auto;
+            background-position: center;
+            background-repeat: repeat;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .section-bg {
+           background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        /* Efek fade-in untuk konten utama */
+        #main-content.fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Gaya untuk tombol musik yang mengambang */
+        #music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            transition: opacity 0.3s;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Variabel Global (Hanya untuk Lingkungan Canvas) -->
+    <script>
+        const __app_id = '';
+        const __firebase_config = '{}';
+        const __initial_auth_token = '';
+    </script>
+    
+    <!-- 1. ELEMEN AUDIO UNTUK MUSIK LATAR -->
+    <audio id="background-music" loop>
+        <!--
+            Ganti URL di bawah ini dengan tautan langsung (.mp3) dari lagu pilihan Anda.
+            Pastikan tautan bersifat publik dan dapat diakses!
+        -->
+        <source src="/html/WhatsApp Audio 2025-10-31 at 10.11.47 AM.mp4" type="audio/mpeg">    
+    </audio>
+
+    <!-- 2. TOMBOL KONTROL MUSIK (Tersembunyi hingga undangan dibuka) -->
+    <button id="music-control" 
+            class="hidden bg-yellow-600 hover:bg-yellow-700 text-white p-4 rounded-full shadow-xl transition transform hover:scale-110 active:scale-90"
+            onclick="toggleMusic()">
+        <i id="music-icon" class="fas fa-music"></i>
+    </button>
+    
+    <!-- Bagian Halaman Sampul (Cover Page) -->
+    <div id="cover-page" class="flex items-center justify-center text-center p-6">
+        <div class="max-w-md w-full text-white">
+            <p class="text-xl mb-4 font-light">The Wedding of</p>
+            <h1 class="playfair text-6xl font-bold mb-6 tracking-wider">Widi & Hassan</h1>
+
+            <!-- Tempatkan nama tamu di sini (simulasi dari parameter URL) -->
+            <div id="to-guest" class="text-lg mb-8 p-4 bg-gray-700/50 rounded-lg">
+                <p class="font-light">Kepada Yth.</p>
+                <p class="font-semibold text-2xl mt-1" id="guest-name">[]</p>
+            </div>
+
+            <!-- TOMBOL KLIK -->
+            <button id="open-button" onclick="openInvitation()"
+                class="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-3 px-8 rounded-full transition duration-300 shadow-lg text-lg transform hover:scale-105 active:scale-95">
+                Buka Undangan
+            </button>
+        </div>
+    </div>
+
+    <!-- Konten Utama Undangan (Akan ditampilkan setelah cover dibuka) -->
+    <main id="main-content" class="hidden p-4 sm:p-8 min-h-screen opacity-0">
+        <div class="max-w-4xl mx-auto">
+
+            <!-- Header dan Pengantin -->
+            <section class="text-center py-16">
+                <p class="text-gray-600 text-lg mb-4">Maha Suci Allah yang telah menciptakan pasangan-pasangan</p>
+                <h1 class="playfair text-6xl sm:text-7xl font-bold text-gray-800 mb-2">Widi & Hassan</h1>
+                <p class="text-gray-500 text-xl">Sabtu, 21 Desember 2035</p>
+            </section>
+            
+            <!-- Ayat atau Kutipan -->
+            <section class="section-bg p-6 my-16 text-center italic text-gray-700 max-w-2xl mx-auto">
+                <p>"Dan di antara tanda-tanda kebesaran-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir." (QS. Ar-Rum: 21)</p>
+            </section>
+
+            <!-- Detail Acara -->
+            <section class="grid md:grid-cols-2 gap-8 my-16">
+                
+                <!-- Acara Akad Nikah -->
+                <div class="section-bg p-6 text-center shadow-xl">
+                    <h2 class="playfair text-3xl font-bold text-yellow-700 mb-4">Akad Nikah</h2>
+                    <p class="text-gray-700 text-lg mb-2">Pukul: 09.00 WIB</p>
+                    <p class="text-gray-500 mb-6">Kantor Urusan Agama (KUA) - Kecamatan Cicendo</p>
+                    <a href="https://www.google.com/maps/place/Kantor+Urusan+Agama+(KUA)+-+Kecamatan+Cicendo/@-6.9078259,107.5999561,17z/data=!3m1!4b1!4m6!3m5!1s0x2e68e640935c3067:0xfa9737f8ecdcedfb!8m2!3d-6.9078259!4d107.602531!16s%2Fg%2F1hf3p1c23?entry=ttu&g_ep=EgoyMDI1MTAyOC4wIKXMDSoASAFQAw%3D%3D" target="_blank"
+                       class="inline-block bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-6 rounded-full transition duration-300">
+                        Lihat Lokasi
+                    </a>
+                </div>
+                
+                <!-- Acara Resepsi -->
+                <div class="section-bg p-6 text-center shadow-xl">
+                    <h2 class="playfair text-3xl font-bold text-yellow-700 mb-4">Resepsi</h2>
+                    <p class="text-gray-700 text-lg mb-2">Pukul: 11.00 - 14.00 WIB</p>
+                    <p class="text-gray-500 mb-6">Wyndham Casablanca Jakarta 
+                        Lantai 54 Aula Pertemuan
+                    </p>
+                    <a href="https://www.google.com/maps/place/Wyndham+Casablanca+Jakarta/@-6.2248964,106.8374685,17z/data=!4m10!3m9!1s0x2e69f30831a0f2b1:0x70e5ae0ff55cdac1!5m3!1s2025-11-09!4m1!1i2!8m2!3d-6.2248964!4d106.8400434!16s%2Fg%2F11h081m9fz?entry=ttu&g_ep=EgoyMDI1MTAyOC4wIKXMDSoASAFQAw%3D%3D" target="_blank"
+                       class="inline-block bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-6 rounded-full transition duration-300">
+                        Lihat Lokasi
+                    </a>
+                </div>
+            </section>
+
+            <!-- Hitung Mundur (Countdown) -->
+            <section class="my-16 text-center">
+                <h2 class="playfair text-4xl font-bold text-gray-800 mb-6">Menghitung Hari Bahagia</h2>
+                <div id="countdown-timer" class="flex justify-center space-x-4 sm:space-x-8 text-white">
+                    <!-- Unit Waktu (Hari, Jam, Menit, Detik) -->
+                </div>
+            </section>
+
+            <!-- Protokol Kesehatan / Catatan Tambahan -->
+            <section class="section-bg p-6 my-16 text-center">
+                <h2 class="playfair text-2xl font-bold text-gray-800 mb-4">Catatan</h2>
+                <p class="text-gray-600">Mohon maaf, dikarenakan kondisi saat ini, kami menghimbau untuk tetap mematuhi protokol kesehatan dan disarankan untuk tidak membawa anak-anak.</p>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-8 bg-gray-100 mt-10">
+        <p class="text-gray-500 text-sm">Made with Love | &copy; 2035 Undangan Widi & Hassan</p>
+        <p class="text-gray-500 text-sm mt-1" id="inviter-id"></p>
+    </footer>
+
+    <script>
+        // Ambil elemen audio
+        const music = document.getElementById('background-music');
+        const musicIcon = document.getElementById('music-icon');
+        const musicControlBtn = document.getElementById('music-control');
+
+        // Fungsi untuk mengolah parameter URL dan menampilkan nama tamu
+        function getGuestName() {
+            const params = new URLSearchParams(window.location.search);
+            const guest = params.get('to') || params.get('kepada') || 'Bu Ella';
+            const decodedGuest = decodeURIComponent(guest.replace(/\+/g, ' '));
+            document.getElementById('guest-name').textContent = decodedGuest;
+            document.getElementById('inviter-id').textContent = `ID Undangan: ${decodedGuest.substring(0, 15)}...`;
+        }
+
+        // Fungsi untuk mengontrol pemutaran musik (Toggle)
+        function toggleMusic() {
+            if (music.paused) {
+                music.play().catch(error => {
+                    console.error("Gagal memutar musik: ", error);
+                    // Tampilkan pesan error jika perlu, tapi tidak pakai alert()
+                });
+                musicIcon.classList.remove('fa-volume-mute');
+                musicIcon.classList.add('fa-music');
+            } else {
+                music.pause();
+                musicIcon.classList.remove('fa-music');
+                musicIcon.classList.add('fa-volume-mute');
+            }
+        }
+
+        // Fungsi utama untuk menampilkan konten utama dan menyembunyikan cover
+        function openInvitation() {
+            const cover = document.getElementById('cover-page');
+            const mainContent = document.getElementById('main-content');
+            
+            // 1. Mulai animasi fade out cover
+            cover.style.opacity = '0'; 
+
+            // 2. Setelah animasi selesai, sembunyikan cover dan tampilkan konten utama
+            setTimeout(() => {
+                cover.style.display = 'none';
+                
+                // Tampilkan tombol kontrol musik
+                musicControlBtn.classList.remove('hidden');
+
+                // Otomatis putar musik (membutuhkan interaksi pengguna sebelumnya, yaitu klik tombol)
+                music.play().then(() => {
+                    // Update ikon jika berhasil diputar
+                    musicIcon.classList.remove('fa-volume-mute');
+                    musicIcon.classList.add('fa-music');
+                }).catch(error => {
+                    // Jika gagal putar otomatis (misal karena browser), pastikan ikon mati
+                    musicIcon.classList.remove('fa-music');
+                    musicIcon.classList.add('fa-volume-mute');
+                    console.log("Musik tidak dapat diputar otomatis. Tamu harus mengklik ikon speaker.");
+                });
+                
+                // Tampilkan konten utama dan terapkan animasi fade-in
+                mainContent.classList.remove('hidden');
+                mainContent.classList.add('fade-in');
+                
+                // Mulai hitung mundur
+                setInterval(updateCountdown, 1000);
+            }, 800); 
+        }
+
+        // Tanggal Target Pernikahan
+        const targetDate = new Date("Dec 21, 2025 09:00:00").getTime();
+        
+        // Fungsi untuk memperbarui hitung mundur (sama seperti sebelumnya)
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            const countdownHtml = `
+                ${createTimeBlock(days, 'Hari')}
+                ${createTimeBlock(hours, 'Jam')}
+                ${createTimeBlock(minutes, 'Menit')}
+                ${createTimeBlock(seconds, 'Detik')}
+            `;
+
+            const timerElement = document.getElementById('countdown-timer');
+            
+            if (distance < 0) {
+                timerElement.innerHTML = `<span class="text-xl playfair text-yellow-700 bg-white p-4 rounded-xl shadow-md">Acara Telah Selesai!</span>`;
+            } else {
+                timerElement.innerHTML = countdownHtml;
+            }
+        }
+
+        // Fungsi pembantu untuk membuat blok waktu
+        function createTimeBlock(value, label) {
+            const displayValue = value < 10 && value >= 0 ? '0' + value : value;
+            return `
+                <div class="bg-yellow-600/90 rounded-xl p-4 w-20 sm:w-24 text-center shadow-lg transform hover:scale-105 transition duration-200">
+                    <p class="playfair text-4xl sm:text-5xl font-bold">${displayValue}</p>
+                    <p class="text-sm mt-1">${label}</p>
+                </div>
+            `;
+        }
+
+        // Inisialisasi: Panggil fungsi untuk mendapatkan nama tamu saat halaman dimuat
+        window.onload = function() {
+            getGuestName();
+            updateCountdown(); 
+        };
+
+    </script>
+</body>
+</html>
